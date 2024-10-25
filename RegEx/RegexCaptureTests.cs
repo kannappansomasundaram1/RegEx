@@ -18,6 +18,22 @@ public partial class RegexCaptureTests
         category.Code.Should().Be(expectedCode);
         category.Description.Should().Be(expectedCategory);
     }
+    
+    [Theory]
+    [InlineData("<h1>hello, world</h1>", "<h1>hello, world</h1>")]
+    public void Captures_UsingGreedyQuantifiers(String input, String expectedCode)
+    {
+        var result = Regex.Match(input, @"(<.+>)"); //one or more time
+        result.Groups[1].Value.Should().Be(expectedCode);
+    }
+    
+    [Theory]
+    [InlineData("<h1>hello, world</h1>")]
+    public void Captures_UsingLazyQuantifiers(String input)
+    {
+        var result = Regex.Match(input, @"(<.+?>)");
+        result.Groups[1].Value.Should().Be("<h1>");
+    }
 
     private static Category ExtractCategory(string input)
     {

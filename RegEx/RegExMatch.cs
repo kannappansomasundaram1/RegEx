@@ -71,4 +71,22 @@ public class RegExMatch
         var result = Regex.IsMatch(input, @"^mulder$");
         result.Should().Be(match);
     }
+    
+    [Theory]
+    [InlineData("hello",  true)]
+    [InlineData("Hello",  true)]
+    public void Match_Alternation(string input, bool match)
+    {
+        var result = Regex.IsMatch(input, @"(h|H)ello");
+        result.Should().Be(match);
+    }
+
+    [Theory]
+    [InlineData("hello, world!",  true)]
+    [InlineData("hello world",  true)]
+    public void Match_Quantifiers(string input, bool match)
+    {
+        var result = Regex.IsMatch(input, @"\w+,? \w+!?");
+        result.Should().Be(match);
+    }
 }
